@@ -23,17 +23,13 @@ function Registrar(){
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({username, password, rol}),
             });
-
             const mensajeError = await response.text();
-
             if(!response.ok){
                 console.log(mensajeError);
                 throw new Error('Error al registrar, el usuario: '+username+' Ya existe.' );
             }
-
             mostrarAlerta("¡Usuario registrado con éxito!");
             navigate('/login');
-
         } catch (error) {
             setErr(error.message);
         }

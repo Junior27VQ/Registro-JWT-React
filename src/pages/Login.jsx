@@ -10,7 +10,6 @@ function Login(){
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
-
     const {login} = useAuth();
 
     const manejarSubmit = async (e) => {
@@ -28,7 +27,6 @@ function Login(){
             if(!response.ok){
                 throw new Error('Usuario o Contraseña Incorrectos')
             }
-            
             const datos = await response.json();
             login(datos.token);
             navigate('/perfil');
