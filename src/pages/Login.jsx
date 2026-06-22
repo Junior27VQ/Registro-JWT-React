@@ -37,7 +37,7 @@ function Login(){
             setError(err.message)
         }
     };
-    
+
     const registar = ()=> {
         navigate('/registrar')
     }
@@ -66,8 +66,9 @@ function Login(){
                 </div>
                 {error && <p>{error}</p>}
                 <button type="submit">Ingresar</button>
-                <button onClick={registar}>Registrar</button>
+                
             </form>
+            <button onClick={registar}>Registrar</button>
         </div>
     )
 }
