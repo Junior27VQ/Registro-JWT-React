@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { API_BASE_URL } from "../config/apiConfig";
 import { useNavigate } from "react-router-dom";
-import AlertaNotificacion from "../components/AlertaNotificacion";
+import { useNotification } from "../components/NotificationContext";
 
 function Registrar(){
     const [username, setUsername] = useState('');
@@ -11,8 +11,8 @@ function Registrar(){
 
     const navigate = useNavigate();
 
-    const [alerta, setAlerta] = useState(null);
-
+    const {mostrarAlerta} = useNotification();
+   
     const onRegistrar = async (e)=>{
         e.preventDefault();
         setErr('');
@@ -31,36 +31,37 @@ function Registrar(){
                 throw new Error('Error al registrar, el usuario: '+username+' Ya existe.' );
             }
 
-            setAlerta("Registro completado correctamente");
-            setTimeout(()=> navigate('/login'), 2000);
-            
+            mostrarAlerta("¡Usuario registrado con éxito!");
+            navigate('/login');
+
         } catch (error) {
             setErr(error.message);
         }
     }
 
     return(
-        <form onSubmit={onRegistrar}>
-            {alerta && <AlertaNotificacion mensaje={alerta} />}
-            <h1>Registro de Nuevo Usuario</h1>
-            <div>
-                <label>Nombre de Usuario</label>
-                <input type="text" value={username} onChange={(e)=> setUsername(e.target.value)} required />
-            </div>
-            <div>
-                <label>Contraseña</label>
-                <input type="password" value={password} onChange={(e)=> setPassword(e.target.value)} required />
-            </div>
-            <div>
-                <label>Rol en el Sistema</label>
-                <select value={rol} onChange={(e)=> setRol(e.target.value)} required>
-                    <option value="USER">USER</option>
-                    <option value="ADMIN">ADMIN</option>
-                </select>
-            </div>
-            {err && <p style={{color: 'red'}}>{err}</p>}
-            <button type="submit">Registrar</button>
-        </form>
+        <div className="auth-container">
+            <h1>Registro</h1>
+            <form onSubmit={onRegistrar}>
+                <div className="input-group">
+                    <label>Nombre de Usuario</label>
+                    <input type="text" value={username} onChange={(e)=> setUsername(e.target.value)} required />
+                </div>
+                <div className="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" value={password} onChange={(e)=> setPassword(e.target.value)} required />
+                </div>
+                <div className="input-group">
+                    <label>Rol</label>
+                    <select value={rol} onChange={(e)=> setRol(e.target.value)}>
+                        <option value="USER">USER</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
+                </div>
+                {err && <p style={{color: '#ff6b6b', fontSize: '0.8rem'}}>{err}</p>}
+                <button type="submit">Registrar</button>
+            </form>
+        </div>
     )
 }
 export default Registrar;

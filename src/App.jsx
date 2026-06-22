@@ -9,25 +9,26 @@ import Login from './pages/Login'
 import ProtectedRoute from './components/ProtectedRouter'
 import Perfil from './pages/Perfil'
 import Registrar from './pages/Registrar'
-import AlertaNotificacion from './components/AlertaNotificacion'
+import { NotificationProvider } from './components/NotificationContext'
 
 function App() {
 
   return (
     <AuthProvaider>
-      <BrowserRouter>
-      <Routes>
+      <NotificationProvider>
+        <BrowserRouter>
+        <Routes>
+          <Route path='login' element={<Login/>} />
+          <Route path='registrar' element={<Registrar/>} />
 
-        <Route path='login' element={<Login/>} />
-        <Route path='registrar' element={<Registrar/>} />
+          <Route element={<ProtectedRoute/>} >
+            <Route path='/perfil' element={<Perfil/>} />
+          </Route>
+          <Route path='*' element={<Navigate to='/login' replace />} />
 
-        <Route element={<ProtectedRoute/>} >
-          <Route path='/perfil' element={<Perfil/>} />
-        </Route>
-        <Route path='*' element={<Navigate to='/login' replace />} />
-
-      </Routes>
-      </BrowserRouter>
+        </Routes>
+        </BrowserRouter>
+      </NotificationProvider>
     </AuthProvaider>
   )
 }

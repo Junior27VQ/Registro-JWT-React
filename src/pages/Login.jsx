@@ -43,33 +43,23 @@ function Login(){
     }
 
     return(
-        <div>
-            <h1>Iniciar Sesion</h1>
-            <form onSubmit={manejarSubmit}>
-                <div>
-                    <label> Usuario: </label>
-                    <input
-                        required 
-                        type="text"
-                        value={username}
-                        onChange={(e)=> setUsername(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Contraseña:</label>
-                    <input
-                        type="password" 
-                        value={password}
-                        onChange={(e)=> setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                {error && <p>{error}</p>}
-                <button type="submit">Ingresar</button>
-                
-            </form>
-            <button onClick={registar}>Registrar</button>
-        </div>
+        <div className="auth-container">
+        <h1>Iniciar Sesión</h1>
+        <form onSubmit={manejarSubmit}>
+            <div className="input-group">
+                <label>Usuario:</label>
+                <input type="text" value={username} onChange={(e)=> setUsername(e.target.value)} required />
+            </div>
+            <div className="input-group">
+                <label>Contraseña:</label>
+                <input type="password" value={password} onChange={(e)=> setPassword(e.target.value)} required />
+            </div>
+            <button type="submit">Ingresar</button>
+            <button type="button" onClick={registar} style={{background: 'transparent', color: '#4ecca3', border: '1px solid #4ecca3'}}>
+                Registrar
+            </button>
+        </form>
+    </div>
     )
 }
 export default Login;

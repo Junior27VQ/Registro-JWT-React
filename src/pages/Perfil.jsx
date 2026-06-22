@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config/apiConfig";
-import AlertaNotificacion from "../components/AlertaNotificacion";
+import { useNotification } from "../components/NotificationContext";
 
 function Perfil(){
     const [datosPerfil, setDatosPerfil] = useState(null);
@@ -12,7 +12,7 @@ function Perfil(){
 
     const navigate = useNavigate();
 
-    const [alerta, setAlerta] = useState(null);
+    const {mostrarAlerta} = useNotification();
 
     useEffect(()=>{
         const cargarPerfil = async ()=>{
@@ -56,31 +56,35 @@ function Perfil(){
         }
 
         logout();
-        setAlerta('Sesion cerrada exitosamente');
-        console.log("Alerta activada:"+ alerta);
-
-        setTimeout(()=> navigate('/login'), 2000);
-        
+        mostrarAlerta("Sesion cerrada con éxito!");
+        navigate('/login');
     }
 
     return(
-        <div>
-            <div>{alerta && <AlertaNotificacion mensaje={alerta} />}</div>
-            <div>
-                <h2>Perfil de Usuario</h2>
-                <button onClick={manejarLogOut}>Cerrar Sesion</button>
-            </div>
-
-            {error && <p>{error}</p>}
-
-            {datosPerfil && (
-                <div>
-                    <p>{datosPerfil.Mensaje}</p>
-                    <p>{datosPerfil.Usuario}</p>
-                    <p>{datosPerfil.Rol}</p>
-                    <p>{datosPerfil.Estatus}</p>
+        <div className="profile-card">
+            <h2>Perfil de Usuario</h2>
+            {datosPerfil ? (
+                <div className="profile-info">
+                    <div className="profile-item">
+                        <span>Menssage:</span> <strong>{datosPerfil.Mensaje}</strong>
+                    </div>
+                    <div className="profile-item">
+                        <span>Usuario:</span> <strong>{datosPerfil.Usuario}</strong>
+                    </div>
+                    <div className="profile-item">
+                        <span>Rol:</span> <strong>{datosPerfil.Rol}</strong>
+                    </div>
+                    <div className="profile-item">
+                        <span>Estado:</span> <strong>{datosPerfil.Estatus}</strong>
+                    </div>
                 </div>
-            )}  
+            ) : (
+                <p>Cargando datos...</p>
+            )}
+
+            <button className="btn-logout" onClick={manejarLogOut}>
+                Cerrar Sesión
+            </button>
         </div>
     )
 
